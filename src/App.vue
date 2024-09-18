@@ -1,26 +1,25 @@
 <template>
   <v-app>
     <v-main>
-      <MainComponent/>
+      <template v-if="authState.isAuthenticated">
+        <MainComponent/>
+      </template>
+      <template v-else>
+        <div class="h-100 d-flex align-center justify-center">
+          <v-btn prepend-icon="mdi-login" @click="login">
+            Login
+          </v-btn>
+        </div>
+      </template>
     </v-main>
   </v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import MainComponent from './components/MainComponent.vue'
+<script setup lang="ts">
+import MainComponent from "@/components/MainComponent.vue";
+import useAuth from "@/config/useAuth";
 
-export default defineComponent({
-  name: 'App',
+const {state: authState, login, handleRedirect} = useAuth();
+handleRedirect();
 
-  components: {
-    MainComponent,
-  },
-
-  data () {
-    return {
-      //
-    }
-  },
-})
 </script>

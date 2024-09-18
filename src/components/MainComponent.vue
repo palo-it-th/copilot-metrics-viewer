@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <div>
     <v-toolbar color="indigo" elevation="4">
       <v-btn icon>
         <v-icon>mdi-github</v-icon>
@@ -10,6 +10,11 @@
       </v-toolbar-title>
       <h2 class="error-message"> {{ mockedDataMessage }} </h2>
       <v-spacer></v-spacer>
+
+      <span>{{ authState.account.username }}</span>
+      <v-btn icon @click="logout">
+        <v-icon>mdi-logout</v-icon>
+      </v-btn>
 
       <template v-slot:extension>
 
@@ -44,7 +49,7 @@
       </div>
     </div>
 
-  </v-card>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -62,6 +67,7 @@ import CopilotChatViewer from './CopilotChatViewer.vue'
 import SeatsAnalysisViewer from './SeatsAnalysisViewer.vue'
 import ApiResponse from './ApiResponse.vue'
 import config from '../config';
+import useAuth from "@/config/useAuth";
 
 export default defineComponent({
   name: 'MainComponent',
@@ -111,6 +117,7 @@ export default defineComponent({
     this.tabItems.unshift(this.itemName);
   },
   setup() {
+      const {logout, state: authState} = useAuth();
       const metricsReady = ref(false);
       const metrics = ref<Metrics[]>([]);
       const seatsReady = ref(false); 
@@ -213,7 +220,7 @@ export default defineComponent({
         
     });
 
-    return { metricsReady, metrics, seatsReady,seats,apiError };
+    return { metricsReady, metrics, seatsReady,seats,apiError, authState, logout };
     }
 })
 </script>
